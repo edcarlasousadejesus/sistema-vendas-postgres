@@ -1,0 +1,28 @@
+====================================================================
+PROJETO PRÁTICO: BANCO DE DADOS RELACIONAL (SISTEMA DE VENDAS)
+====================================================================
+
+1. DISCRIÇÃO DO PROJETO
+Implementação de uma base de dados relacional para gestão de vendas/e-commerce
+desenvolvida no SGBD PostgreSQL 18.
+
+2. ESTRUTURA DAS TABELAS
+- clientes: Registo dos clientes (ID, Nome, Email, Data de Registo)
+- categorias: Categorias dos produtos (ID, Nome)
+- produtos: Catálogo de artigos (ID, Nome, Preço, Stock, Categoria_ID)
+- pedidos: Vendas efetuadas (ID, Cliente_ID, Data, Status)
+- itens_pedido: Produtos associados a cada pedido (ID, Pedido_ID, Produto_ID, Quantidade, Preço Unitário)
+
+3. SCRIPT DE CONSULTA UTILIZADO PARA VALIDAÇÃO
+SELECT 
+    p.pedido_id, 
+    c.nome AS cliente, 
+    SUM(i.quantidade * i.preco_unitario) AS valor_total
+FROM pedidos p
+JOIN clientes c ON p.cliente_id = c.cliente_id
+JOIN itens_pedido i ON p.pedido_id = i.pedido_id
+GROUP BY p.pedido_id, c.nome;
+
+4. INSTRUÇÕES PARA RESTAURAÇÃO DO BANCO
+Para importar este projeto num novo ambiente PostgreSQL, execute:
+psql -U postgres -d sistema_vendas -f backup_sistema_vendas.sql
